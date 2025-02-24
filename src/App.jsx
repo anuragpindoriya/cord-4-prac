@@ -16,26 +16,31 @@ const {Header, Content} = Layout;
 const App = () => {
     const {isAuthenticated} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
+
     // this get value of product from local storage and update product
     useEffect(() => {
-        const cartValue = JSON.parse(localStorage.getItem('cart'));
-        const wishlistValue = JSON.parse(localStorage.getItem('wishlist'));
 
-        cartValue.forEach((item) => {
-            dispatch(addToCart(item));
-            dispatch(updatePropertyOfProduct({id: item.id, property: "isInCart", value: true}));
-        });
+        // only update cart and wishlist if user is authenticated
+        if (isAuthenticated) {
+            const cartValue = JSON.parse(localStorage.getItem('cart'));
+            const wishlistValue = JSON.parse(localStorage.getItem('wishlist'));
 
-        wishlistValue.forEach((item) => {
-            dispatch(addToWishlist(item));
-            dispatch(updatePropertyOfProduct({id: item.id, property: "isInWishlist", value: true}));
-        });
+            cartValue.forEach((item) => {
+                dispatch(addToCart(item));
+                dispatch(updatePropertyOfProduct({id: item.id, property: "isInCart", value: true}));
+            });
 
-    }, [dispatch]);
+            wishlistValue.forEach((item) => {
+                dispatch(addToWishlist(item));
+                dispatch(updatePropertyOfProduct({id: item.id, property: "isInWishlist", value: true}));
+            });
+        }
+
+    }, [dispatch, isAuthenticated]);
 
     return (
         <Router>
-            <Layout>
+            <Layout className={'h-[100%]'}>
                 <Header>
                     <Menu theme="dark" mode="horizontal" className="flex justify-between">
                         <div>
