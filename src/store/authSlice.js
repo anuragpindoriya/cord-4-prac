@@ -18,7 +18,7 @@ const authSlice = createSlice({
             state.isAuthenticated = false;
         },
         addUserDetails: (state, action) => {
-            state.userName = action.payload.userName;
+            state.userName = action.payload.username;
             state.password = action.payload.password;
         }
     },
