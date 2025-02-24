@@ -8,13 +8,14 @@ import Wishlist from "./pages/Wishlist";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {useEffect} from "react";
-import {addToCart, addToWishlist, updatePropertyOfProduct} from "./store/productSlice.js";
+import {addToCart, addToWishlist, updateAllProductProperty, updatePropertyOfProduct} from "./store/productSlice.js";
 import ProductDetail from "./pages/ProductDetail.jsx";
 
 const {Header, Content} = Layout;
 
 const App = () => {
-    const {isAuthenticated} = useSelector((state) => state.auth);
+    const {isAuthenticated, userName} = useSelector((state) => state.auth);
+
     const dispatch = useDispatch();
 
     // this get value of product from local storage and update product
@@ -37,7 +38,13 @@ const App = () => {
         }
 
     }, [dispatch, isAuthenticated]);
+    const handelLogout = () => {
+        dispatch(logout());
 
+        // after logout it handel to remove all product from cart and wishlist
+        dispatch(updateAllProductProperty({property: "isInCart", value: false}));
+        dispatch(updateAllProductProperty({property: "isInWishlist", value: false}));
+    }
     return (
         <Router>
             <Layout className={'h-[100%]'}>
@@ -48,9 +55,12 @@ const App = () => {
                             <Menu.Item key="2"><Link to="/cart">Cart</Link></Menu.Item>
                             <Menu.Item key="3"><Link to="/wishlist">Wishlist</Link></Menu.Item>
                         </div>
-                        <div>
-                            {isAuthenticated ? (
-                                <Button onClick={() => dispatch(logout())}>Logout</Button>
+                        <div className={'flex items-center gap-4'}>
+                            {isAuthenticated ? (<>
+                                    <p>Welcome back {userName}</p>
+                                    <Button onClick={() => handelLogout()}>Logout</Button>
+
+                                </>
                             ) : (
                                 <Link to="/login"><Button>Login</Button></Link>
                             )}

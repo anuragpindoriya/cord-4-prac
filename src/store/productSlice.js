@@ -307,9 +307,15 @@ const productSlice = createSlice({
             const {id, property, value} = action.payload;
             const index = state.products.findIndex((product) => product.id === id);
             state.products[index][property] = value;
-        }
-    },
+        },
+        updateAllProductProperty: (state, action) => {
+            const {property, value} = action.payload;
+            state.products.forEach((product) => {
+                product[property] = value;
+            });
+        },
+    }
 });
 
-export const {addToCart, addToWishlist, updatePropertyOfProduct} = productSlice.actions
+export const {addToCart, addToWishlist, updatePropertyOfProduct, updateAllProductProperty} = productSlice.actions
 export default productSlice.reducer;
