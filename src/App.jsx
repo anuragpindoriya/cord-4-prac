@@ -50,7 +50,7 @@ const App = () => {
             <Layout className={'h-[100%]'}>
                 <Header>
                     <Menu theme="dark" mode="horizontal" className="flex justify-between">
-                        <div>
+                        <div className={'flex gap-4 item-center'}>
                             <Menu.Item key="1"><Link to="/">Dashboard</Link></Menu.Item>
                             <Menu.Item key="2"><Link to="/cart">Cart</Link></Menu.Item>
                             <Menu.Item key="3"><Link to="/wishlist">Wishlist</Link></Menu.Item>
