@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 import {useEffect} from "react";
 import {addToCart, addToWishlist, updatePropertyOfProduct} from "./store/productSlice.js";
+import ProductDetail from "./pages/ProductDetail.jsx";
 
 const {Header, Content} = Layout;
 
@@ -55,6 +56,7 @@ const App = () => {
                 <Content style={{padding: "20px"}}>
                     <Routes>
                         <Route path="/" element={<Dashboard/>}/>
+                        <Route path="/product/:id" element={<ProductDetail/>}/>
                         <Route path="/login" element={<Login/>}/>
 
                         {/* Protected Routes */}
