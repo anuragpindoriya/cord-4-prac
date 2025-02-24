@@ -8,7 +8,8 @@ import {useMemo} from "react";
 const Cart = () => {
     const dispatch = useDispatch();
     const products = useSelector((state) => state.products.products);
-    const cartProduct = useMemo(() => products?.filter((item) => item.isInWishlist), [products]);
+    const wiseListProduct = useMemo(() => products?.filter((item) => item.isInWishlist), [products]);
+    const totalProduct = useMemo(() => wiseListProduct.length, [wiseListProduct]);
 
     const {isAuthenticated} = useSelector((state) => state.auth);
 
@@ -18,20 +19,26 @@ const Cart = () => {
         toast.success("Product remove from wishlist");
     }
     return (
-        <div>
-            <h2>Wish List</h2>
-            <div style={{display: "flex", gap: "20px", flexWrap: "wrap"}}>
-                {cartProduct.map((product) => (
-                    <Card key={product.id} title={product.title} style={{width: 300}}>
-                        <img src={product.image} alt={product.title}/>
-                        <p>Price: ${product.price}</p>
-                        <Button type={"primary"}
-                                onClick={() => handelRemoveFromWiseList(product)} danger>Remove from wishlist</Button>
+        <>
+            {
+                totalProduct > 0 ? <div>
+                    <h2>Wish List</h2>
+                    <div style={{display: "flex", gap: "20px", flexWrap: "wrap"}}>
+                        {wiseListProduct.map((product) => (
+                            <Card key={product.id} title={product.title} style={{width: 300}}>
+                                <img src={product.image} alt={product.title}/>
+                                <p>Price: ${product.price}</p>
+                                <Button type={"primary"}
+                                        onClick={() => handelRemoveFromWiseList(product)} danger>Remove from
+                                    wishlist</Button>
 
-                    </Card>
-                ))}
-            </div>
-        </div>
+                            </Card>
+                        ))}
+                    </div>
+                </div> : <div><p className={'text-[40px]'}>No product in wishlist</p></div>
+            }
+
+        </>
     );
 };
 
