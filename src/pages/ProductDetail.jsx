@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {Button} from "antd";
 import {addToCart, addToWishlist} from "../store/productSlice.js";
@@ -8,10 +8,17 @@ const ProductDetail = () => {
     const {id} = useParams();
 
     const products = useSelector((state) => state.products.products);
+    const {isAuthenticated} = useSelector((state) => state.auth);
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const product = products.find((product) => product.id.toString() === id);
 
     const handelProductAction = (product, action) => {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
         if (action === "cart") {
             dispatch(addToCart(product));
             if (product.isInCart) {

@@ -7,20 +7,26 @@ import {useNavigate} from "react-router-dom";
 const Dashboard = () => {
 
     const products = useSelector((state) => state.products.products);
+    const {isAuthenticated} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const handelProductAction = (product, action) => {
+        if (!isAuthenticated) {
+            navigate('/login');
+            return;
+        }
+
         if (action === "cart") {
             dispatch(addToCart(product));
             if (product.isInCart) {
-                toast.success("Product remove from cart");
+                toast.success("Product removed from cart");
             } else {
                 toast.success("Product added to cart");
             }
         } else {
             dispatch(addToWishlist(product));
             if (product.isInWishlist) {
-                toast.success("Product remove from wishlist");
+                toast.success("Product removed from wishlist");
             } else {
                 toast.success("Product added to wishlist");
             }
